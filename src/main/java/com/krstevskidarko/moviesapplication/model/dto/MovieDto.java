@@ -1,4 +1,4 @@
-package com.krstevskidarko.moviesapplication.model.model.dto;
+package com.krstevskidarko.moviesapplication.model.dto;
 
 import lombok.Data;
 

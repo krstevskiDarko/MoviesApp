@@ -1,4 +1,4 @@
-package com.krstevskidarko.moviesapplication.model.model;
+package com.krstevskidarko.moviesapplication.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
