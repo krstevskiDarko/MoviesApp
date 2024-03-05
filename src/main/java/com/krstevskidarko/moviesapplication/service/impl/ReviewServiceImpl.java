@@ -8,6 +8,7 @@ import com.krstevskidarko.moviesapplication.model.exceptions.InvalidMovieIdExcep
 import com.krstevskidarko.moviesapplication.repository.MovieRepository;
 import com.krstevskidarko.moviesapplication.repository.ReviewRepository;
 import com.krstevskidarko.moviesapplication.service.ReviewService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public Review save(Long movieId, String reviewText) {
         Movie movie = this.movieRepository.findById(movieId)

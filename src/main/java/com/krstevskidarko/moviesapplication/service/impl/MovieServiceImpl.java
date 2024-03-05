@@ -9,6 +9,7 @@ import com.krstevskidarko.moviesapplication.model.exceptions.InvalidMovieIdExcep
 import com.krstevskidarko.moviesapplication.repository.MovieRepository;
 import com.krstevskidarko.moviesapplication.service.MovieService;
 import com.krstevskidarko.moviesapplication.service.RatingService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +45,7 @@ public class MovieServiceImpl implements MovieService {
         return this.movieRepository.findById(id);
     }
 
+    @Transactional
     @Override
     public Optional<Movie> save(MovieDto movieDto) {
 
