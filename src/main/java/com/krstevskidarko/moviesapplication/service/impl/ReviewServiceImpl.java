@@ -47,6 +47,13 @@ public class ReviewServiceImpl implements ReviewService {
         reviewDto.setReview(review.getReview());
         reviewDto.setMovieId(review.getMovie().getId());
 
+        Movie movie = this.movieRepository.findById(review.getMovie().getId())
+                .orElseThrow(InvalidMovieIdException::new);
+
+        reviewDto.setMovieTitle(movie.getTitle());
+        reviewDto.setMovieRating(movie.getAverageRating());
+        reviewDto.setMovieDescription(movie.getDescription());
+
         return reviewDto;
     }
 }

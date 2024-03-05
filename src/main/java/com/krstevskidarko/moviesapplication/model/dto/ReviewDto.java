@@ -9,11 +9,17 @@ public class ReviewDto {
 
     private Long movieId;
 
+    private String movieTitle;
+
+    private String movieDescription;
+
+    private Double movieRating;
+
+
     public ReviewDto() {
     }
 
     public ReviewDto( String review) {
-
         this.review = review;
     }
 }

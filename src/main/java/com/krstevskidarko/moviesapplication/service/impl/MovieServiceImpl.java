@@ -154,6 +154,8 @@ public class MovieServiceImpl implements MovieService {
 
     private MovieDto convertToDto(Movie movie) {
         MovieDto movieDto = new MovieDto();
+
+        movieDto.setId(movie.getId());
         movieDto.setTitle(movie.getTitle());
         movieDto.setDescription(movie.getDescription());
         movieDto.setGenre(movie.getGenre());
