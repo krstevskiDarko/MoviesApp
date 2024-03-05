@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -26,12 +27,20 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> listAllMovies() {
-        return this.movieRepository.findAll();
+    public List<MovieDto> listAllMovies() {
+        List<Movie> movies = movieRepository.findAll();
+        return movies.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Movie> findById(Long id) {
+    public Optional<MovieDto> findById(Long id) {
+        Optional<Movie> movieOptional = movieRepository.findById(id);
+        return movieOptional.map(this::convertToDto);
+    }
+
+    public Optional<Movie> findMovieById(Long id) {
         return this.movieRepository.findById(id);
     }
 
@@ -48,14 +57,16 @@ public class MovieServiceImpl implements MovieService {
         return this.movieRepository.save(new Movie(title,description,genre,year));
     }
 
-    @Override
-    public Movie review(Long id, String review){
-        Movie movie = this.movieRepository.findById(id).orElseThrow(InvalidMovieIdException::new);
 
-        movie.getReviews().add(new Review(review,movie));
 
-        return this.movieRepository.save(movie);
-    }
+//    @Override
+//    public Movie review(Long id, String review){
+//        Movie movie = this.movieRepository.findById(id).orElseThrow(InvalidMovieIdException::new);
+//
+//        movie.getReviews().add(new Review(review,movie));
+//
+//        return this.movieRepository.save(movie);
+//    }
 
     @Override
     public Movie rate(Long id, Double rating) {
@@ -64,47 +75,99 @@ public class MovieServiceImpl implements MovieService {
         movie.getRatings().add(new Rating(rating,movie));
 
         Double avgRating = this.ratingService.calculateAverageRating(movie);
-
         movie.setAverageRating(avgRating);
 
         return this.movieRepository.save(movie);
     }
 
     @Override
-    public List<Movie> listMoviesWithGenre(String genre) {
+    public List<MovieDto> listMoviesWithGenre(String genre) {
         if(genre != null){
-            return this.movieRepository.findAllByGenre(genre);
+            List<Movie> movies = this.movieRepository.findAllByGenre(genre);
+            return movies.stream()
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
+
         }
-        return this.movieRepository.findAll();    }
+        List<Movie> movies = this.movieRepository.findAll();
+        return movies.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
 
     @Override
-    public List<Movie> listMoviesWithGenres(List<String> genres) {
+    public List<MovieDto> listMoviesWithGenres(List<String> genres) {
         if(genres != null){
-            return this.movieRepository.findAllByGenreIsIn(genres);
+            List<Movie> movies = this.movieRepository.findAllByGenreIsIn(genres);
+            return movies.stream()
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
         }
-        return this.movieRepository.findAll();
+        List<Movie> movies = this.movieRepository.findAll();
+        return movies.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Movie> listMovieInYear(Integer year) {
+    public List<MovieDto> listMovieInYear(Integer year) {
         if(year != null){
-            return this.movieRepository.findAllByYear(year);
+            List<Movie> movies =this.movieRepository.findAllByYear(year);
+            return movies.stream()
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
         }
-        return this.movieRepository.findAll();
+        List<Movie> movies = this.movieRepository.findAll();
+        return movies.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Movie> listMoviesFromYear(Integer year) {
+    public List<MovieDto> listMoviesFromYear(Integer year) {
         if(year != null){
-            return this.movieRepository.findAllByYearAfter(year);
+            List<Movie> movies = this.movieRepository.findAllByYearAfter(year);
+            return movies.stream()
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
         }
-        return this.movieRepository.findAll();
+        List<Movie> movies = this.movieRepository.findAll();
+        return movies.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Movie> listMoviesToYear(Integer year) {
-        if(year != null){
-            return this.movieRepository.findAllByYearBefore(year);
+    public List<MovieDto> listMoviesToYear(Integer year) {
+        if (year != null) {
+            List<Movie> movies = this.movieRepository.findAllByYearBefore(year);
+            return movies.stream()
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
+
         }
-        return this.movieRepository.findAll();    }
+        List<Movie> movies = this.movieRepository.findAll();
+        return movies.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    private MovieDto convertToDto(Movie movie) {
+        MovieDto movieDto = new MovieDto();
+        movieDto.setTitle(movie.getTitle());
+        movieDto.setDescription(movie.getDescription());
+        movieDto.setGenre(movie.getGenre());
+        movieDto.setYear(movie.getYear());
+        movieDto.setAverageRating(movie.getAverageRating());
+        List<Long> ratingIds = movie.getRatings().stream()
+                .map(Rating::getId)
+                .collect(Collectors.toList());
+        movieDto.setRatingIds(ratingIds);
+
+        List<Long> reviewIds = movie.getReviews().stream()
+                .map(Review::getId)
+                .collect(Collectors.toList());
+        movieDto.setReviewIds(reviewIds);
+        return movieDto;
+    }
 }

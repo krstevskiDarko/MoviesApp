@@ -9,6 +9,7 @@ import lombok.Data;
 @Entity
 @Data
 public class Review {
+
     @Id
     @GeneratedValue
     private Long id;

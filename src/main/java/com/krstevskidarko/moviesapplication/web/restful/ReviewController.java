@@ -2,6 +2,7 @@ package com.krstevskidarko.moviesapplication.web.restful;
 
 
 import com.krstevskidarko.moviesapplication.model.Review;
+import com.krstevskidarko.moviesapplication.model.dto.ReviewDto;
 import com.krstevskidarko.moviesapplication.service.ReviewService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ public class ReviewController {
     }
 
     @GetMapping
-    public List<Review> findAll(){
+    public List<ReviewDto> findAll(){
         return this.reviewService.findAll();
     }
 }

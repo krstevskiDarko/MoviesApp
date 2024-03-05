@@ -8,25 +8,27 @@ import java.util.Optional;
 
 public interface MovieService {
 
-    List<Movie> listAllMovies();
+    List<MovieDto> listAllMovies();
 
-    Optional<Movie> findById(Long id);
+    Optional<MovieDto> findById(Long id);
 
     Optional<Movie> save(MovieDto movieDto);
 
-    Movie review(Long id, String review);
+//    Movie review(Long id, String review);
+
+    Optional<Movie> findMovieById(Long id);
 
     Movie create(String title, String description, String genre, Integer year);
 
     Movie rate(Long id, Double rating);
 
-    List<Movie> listMoviesWithGenre(String genre);
+    List<MovieDto> listMoviesWithGenre(String genre);
 
-    List<Movie> listMoviesWithGenres(List<String> genres);
+    List<MovieDto> listMoviesWithGenres(List<String> genres);
 
-    List<Movie> listMovieInYear(Integer year);
+    List<MovieDto> listMovieInYear(Integer year);
 
-    List<Movie> listMoviesFromYear(Integer year);
+    List<MovieDto> listMoviesFromYear(Integer year);
 
-    List<Movie> listMoviesToYear(Integer year);
+    List<MovieDto> listMoviesToYear(Integer year);
 }

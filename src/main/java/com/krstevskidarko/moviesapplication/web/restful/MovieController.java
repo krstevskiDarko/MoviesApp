@@ -4,6 +4,8 @@ package com.krstevskidarko.moviesapplication.web.restful;
 import com.krstevskidarko.moviesapplication.model.Movie;
 import com.krstevskidarko.moviesapplication.model.dto.MovieDto;
 import com.krstevskidarko.moviesapplication.service.MovieService;
+import com.krstevskidarko.moviesapplication.service.RatingService;
+import com.krstevskidarko.moviesapplication.service.ReviewService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,18 +19,24 @@ public class MovieController {
 
     private final MovieService movieService;
 
+    private final ReviewService reviewService;
 
-    public MovieController(MovieService movieService) {
+    private final RatingService ratingService;
+
+
+    public MovieController(MovieService movieService, ReviewService reviewService, RatingService ratingService) {
         this.movieService = movieService;
+        this.reviewService = reviewService;
+        this.ratingService = ratingService;
     }
 
     @GetMapping
-    public List<Movie> findAll(){
+    public List<MovieDto> findAll(){
         return this.movieService.listAllMovies();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Movie> findById(@PathVariable Long id){
+    public ResponseEntity<MovieDto> findById(@PathVariable Long id){
         return this.movieService.findById(id)
                 .map(movie -> ResponseEntity.ok().body(movie))
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -43,32 +51,30 @@ public class MovieController {
     }
 
     @PostMapping("/{id}/rate")
-    public ResponseEntity<Movie> rate(@PathVariable Long id, @RequestBody Double rating){
+    public ResponseEntity<Double> rate(@PathVariable Long id, @RequestBody Double rating){
 
-        Optional<Movie> movie = this.movieService.findById(id);
+        Optional<Movie> movie = this.movieService.findMovieById(id);
 
-        if (movie.isPresent()){
-            this.movieService.rate(id, rating);
-            return ResponseEntity.ok().body(movie.get());
+        if (movie.isPresent() && rating>0 && rating <= 10){
+            this.ratingService.save(id,rating);
+
+            Double avg = this.ratingService.calculateAverageRating(movie.get());
+            return ResponseEntity.ok().body(avg);
         }
-        else {
-            return ResponseEntity.notFound().build();
-
-        }
+            return ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/{id}/review")
-    public ResponseEntity<Movie> review(@PathVariable Long id, @RequestBody String review){
+    public ResponseEntity<String> review(@PathVariable Long id, @RequestBody String review){
 
-        Optional<Movie> movie = this.movieService.findById(id);
+        Optional<MovieDto> movie = this.movieService.findById(id);
 
-        if (movie.isPresent()){
-            this.movieService.review(id, review);
-            return ResponseEntity.ok().body(movie.get());
+        if (movie.isPresent()) {
+            this.reviewService.save(id,review);
+            return ResponseEntity.ok().body("The review you added was successful!");
         }
-        else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.badRequest().build();
+
     }
 
 }
