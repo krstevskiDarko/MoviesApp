@@ -18,6 +18,8 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     List<Movie> findAllByYearBefore(Integer year);
 
+    List<Movie> findAllByTitleLike(String title);
+
     void deleteByTitle(String title);
 
 }

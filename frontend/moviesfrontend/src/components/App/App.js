@@ -26,7 +26,7 @@ class App extends Component {
             <Router history={this.props.history}>
                 <Header/>
                 <main>
-                    <div className="container">
+                    <div className="container m-4">
                         <Routes>
                             <Route path={"/movies/add"} element={
                                 <ProductAdd

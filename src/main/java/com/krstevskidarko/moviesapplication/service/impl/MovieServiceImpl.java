@@ -177,6 +177,21 @@ public class MovieServiceImpl implements MovieService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<MovieDto> listMoviesWithTitle(String title) {
+        if(title!=null){
+            List<Movie> movies = this.movieRepository.findAllByTitleLike(title);
+            return movies.stream()
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
+        }
+        List<Movie> movies = this.movieRepository.findAll();
+        return movies.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+
+    }
+
     private MovieDto convertToDto(Movie movie) {
         MovieDto movieDto = new MovieDto();
 

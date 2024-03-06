@@ -9,8 +9,7 @@ import com.krstevskidarko.moviesapplication.service.ReviewService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -31,8 +30,39 @@ public class MovieController {
     }
 
     @GetMapping
-    public List<MovieDto> findAll(){
-        return this.movieService.listAllMovies();
+    public List<MovieDto> findAll(@RequestParam(required = false) String title,
+                                  @RequestParam(required = false) String genre,
+                                  @RequestParam(required = false) List<String> genres,
+                                  @RequestParam(required = false) Integer year,
+                                  @RequestParam(required = false) Integer yearFrom,
+                                  @RequestParam(required = false) Integer yearTo)
+    {
+        if (title == null && genre == null && (genres == null || genres.isEmpty()) && year == null && yearFrom == null && yearTo == null) {
+            return this.movieService.listAllMovies();
+        }
+        Set<MovieDto> movies = new HashSet<>();
+
+        if(title != null){
+            movies.addAll(this.movieService.listMoviesWithTitle(title));
+        }
+        if(genre != null){
+            movies.addAll(this.movieService.listMoviesWithGenre(genre));
+        }
+        if(genres != null){
+            movies.addAll(this.movieService.listMoviesWithGenres(genres));
+        }
+        if(year != null){
+            movies.addAll(this.movieService.listMovieInYear(year));
+        }
+        if(yearFrom != null){
+            movies.addAll(this.movieService.listMoviesFromYear(yearFrom));
+        }
+        if(yearTo != null){
+            movies.addAll(this.movieService.listMoviesToYear(yearTo));
+        }
+
+
+        return new ArrayList<>(movies);
     }
 
     @GetMapping("/{id}")

@@ -31,4 +31,6 @@ public interface MovieService {
     List<MovieDto> listMoviesFromYear(Integer year);
 
     List<MovieDto> listMoviesToYear(Integer year);
+
+    List<MovieDto> listMoviesWithTitle(String title);
 }
