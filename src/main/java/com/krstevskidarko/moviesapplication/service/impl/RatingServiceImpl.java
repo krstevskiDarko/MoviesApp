@@ -34,28 +34,4 @@ public class RatingServiceImpl implements RatingService {
 
         return this.ratingRepository.save(rating);
     }
-
-    @Override
-    public Double calculateAverageRating(Movie movie) {
-        List<Rating> ratings = movie.getRatings();
-
-        if (ratings.isEmpty()) {
-            return 0.0;
-        }
-
-        double sum = 0.0;
-        int count = 0;
-        for (Rating rating : ratings) {
-            if (rating.getValue() != null) {
-                sum += rating.getValue();
-                count++;
-            }
-        }
-
-        if (count == 0) {
-            return 0.0;
-        }
-
-        return sum / count;
-    }
 }

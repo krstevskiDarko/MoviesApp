@@ -5,6 +5,7 @@ import com.krstevskidarko.moviesapplication.model.Movie;
 import com.krstevskidarko.moviesapplication.model.Review;
 import com.krstevskidarko.moviesapplication.model.dto.ReviewDto;
 import com.krstevskidarko.moviesapplication.model.exceptions.InvalidMovieIdException;
+import com.krstevskidarko.moviesapplication.model.exceptions.InvalidRatingException;
 import com.krstevskidarko.moviesapplication.repository.MovieRepository;
 import com.krstevskidarko.moviesapplication.repository.ReviewRepository;
 import com.krstevskidarko.moviesapplication.service.ReviewService;
@@ -12,6 +13,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +34,29 @@ public class ReviewServiceImpl implements ReviewService {
         return reviews.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<ReviewDto> findById(Long id) {
+        Optional<Review> review = this.reviewRepository.findById(id);
+
+        return review.map(this::convertToDto);
+    }
+
+    @Override
+    public List<ReviewDto> findByIdIn(List<Long> ids) {
+        if(ids !=null){
+            List<Review> reviews = this.reviewRepository.findByIdIn(ids);
+
+            return reviews.stream()
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
+        }
+        List<Review> reviews = this.reviewRepository.findAll();
+        return reviews.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+
     }
 
     @Transactional

@@ -24,10 +24,10 @@ public class Movie {
 
     private Double averageRating;
 
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<Rating> ratings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
     public Movie() {
@@ -39,5 +39,4 @@ public class Movie {
         this.genre = genre;
         this.year = year;
     }
-
 }

@@ -58,14 +58,15 @@ public class MovieController {
         if (movie.isPresent() && rating>0 && rating <= 10){
             this.ratingService.save(id,rating);
 
-            Double avg = this.ratingService.calculateAverageRating(movie.get());
-            return ResponseEntity.ok().body(avg);
+            this.movieService.rate(id,rating);
+            return ResponseEntity.ok().body(0.0);
         }
             return ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/{id}/review")
     public ResponseEntity<String> review(@PathVariable Long id, @RequestBody String review){
+
 
         Optional<MovieDto> movie = this.movieService.findById(id);
 
@@ -76,5 +77,6 @@ public class MovieController {
         return ResponseEntity.badRequest().build();
 
     }
+
 
 }
