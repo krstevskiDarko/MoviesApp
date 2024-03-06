@@ -75,13 +75,10 @@ public class MovieServiceImpl implements MovieService {
     public Movie rate(Long id, Double rating) {
         Movie movie = this.movieRepository.findById(id).orElseThrow(InvalidMovieIdException::new);
 
-
-
-        // Recalculate the average rating
         Double avgRating = calculateAverageRating(movie);
+
         movie.setAverageRating(avgRating);
 
-        // Save the movie with the updated average rating
         return this.movieRepository.save(movie);
     }
 

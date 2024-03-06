@@ -31,7 +31,6 @@ public class RatingServiceImpl implements RatingService {
                 .orElseThrow(InvalidMovieIdException::new);
 
         Rating rating = new Rating(value,movie);
-
         return this.ratingRepository.save(rating);
     }
 }

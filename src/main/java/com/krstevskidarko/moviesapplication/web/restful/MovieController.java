@@ -55,28 +55,26 @@ public class MovieController {
 
         Optional<Movie> movie = this.movieService.findMovieById(id);
 
-        if (movie.isPresent() && rating>0 && rating <= 10){
-            this.ratingService.save(id,rating);
+        if (movie.isPresent() && rating > 0 && rating <= 10){
+            this.ratingService.save(id, rating);
 
-            this.movieService.rate(id,rating);
-            return ResponseEntity.ok().body(0.0);
+            this.movieService.rate(id, rating);
+            return ResponseEntity.ok().body(rating);
         }
-            return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().build();
     }
 
+
     @PostMapping("/{id}/review")
-    public ResponseEntity<String> review(@PathVariable Long id, @RequestBody String review){
+    public ResponseEntity<String> review(@PathVariable Long id, @RequestBody String review) {
 
-
+        System.out.println("This is the Id:" + id);
         Optional<MovieDto> movie = this.movieService.findById(id);
 
         if (movie.isPresent()) {
-            this.reviewService.save(id,review);
+            this.reviewService.save(id, review);
             return ResponseEntity.ok().body("The review you added was successful!");
         }
-        return ResponseEntity.badRequest().build();
-
+        return ResponseEntity.badRequest().body("Bad Request");
     }
-
-
 }
