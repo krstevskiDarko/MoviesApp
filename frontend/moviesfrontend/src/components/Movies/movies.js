@@ -7,7 +7,7 @@ const Movies = (props) => {
 
     const [pagination, updatePagination] = React.useState({
         page: 0,
-        size: 3
+        size: 6
     })
 
     const pageCount = props.movies.length === 0 ? 1 : Math.ceil(props.movies.length / pagination.size);
@@ -105,45 +105,47 @@ const Movies = (props) => {
                     </div>
                 </div>
             </form>
-            <div className={"container mt-5"}>
-                <table className={"table table-striped"}>
-                    <thead>
-                    <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Genre</th>
-                        <th scope="col">Rating</th>
-                        <th scope="col">Year</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+            <div className="container pt-3">
+                <div className="row">
                     {props.movies.slice(offset, nextPageOffset).map((term)=>{
                         return(
-                            <tr key={term.id}>
-                                <td>{term.title}</td>
-                                <td>{term.description}</td>
-                                <td>{term.genre}</td>
-                                <td>{term.averageRating}</td>
-                                <td>{term.year}</td>
-                                <td>
-                                    <Link
-                                        to={`/movies/${term.id}`}
-                                        onClick={() =>
-                                            props.selectMovie(term.id)}>
-                                        Get more details!
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/movies/${term.id}/review`} onClick={() => props.selectMovie(term.id)}> Add your review! </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/movies/${term.id}/rate`} onClick={() => props.selectMovie(term.id)}> Add your rating! </Link>
-                                </td>
-                            </tr>
+                            <div className="col-lg-4 my-2">
+                                <div className="card border border-secondary shadow">
+                                    <div className="card-body">
+                                        <span className="card-subtitle text-secondary mb-2 d-block">{term.genre}</span>
+                                        <span className="card-subtitle text-secondary mb-2 d-block">{term.year}</span>
+                                        <h3 className="card-title">{term.title}</h3>
+                                        <hr />
+                                        <p className="card-text">{term.description}</p>
+                                        <hr />
+                                        <p className="card-text fw-bold">Rating: {term.averageRating}</p>
+                                        <div className="btn-group mx-auto" role="group">
+                                            <Link
+                                                to={`/movies/${term.id}`}
+                                                className="btn btn-outline-primary"
+                                                onClick={() => props.selectMovie(term.id)}>
+                                                Get more details
+                                            </Link>
+                                            <Link
+                                                to={`/movies/${term.id}/review`}
+                                                className="btn btn-outline-success"
+                                                onClick={() => props.selectMovie(term.id)}>
+                                                Add your review
+                                            </Link>
+                                            <Link
+                                                to={`/movies/${term.id}/rate`}
+                                                className="btn btn-outline-warning"
+                                                onClick={() => props.selectMovie(term.id)}>
+                                                Add your rating
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         );
                     })}
-                    </tbody>
-                </table>
+                </div>
             </div>
             <ReactPaginate previousLabel={"Back"}
                            nextLabel={"Next"}

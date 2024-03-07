@@ -6,7 +6,7 @@ const MovieDetails = (props) => {
     return (
         <div>
             <div>
-                <table className={"table"}>
+                <table className="table table-striped border rounded-lg border-secondary shadow">
                     <thead>
                     <tr>
                         <th scope="col">Title</th>

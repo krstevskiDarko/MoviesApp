@@ -32,12 +32,11 @@ const CreateReview = (props) => {
             <div className="col-md-5">
                 <form onSubmit={onFormSubmit}>
                     <div className="form-group">
-                        <div className="container">
-                            <div>
-                                {props.movie.title}
-                            </div>
+                        <div className={"display-5 fw-bold"}>
+                            {props.movie.title}
                         </div>
-                        <label htmlFor="review">Add your review!</label>
+                        <hr></hr>
+                        <label htmlFor="review" className={"h3"}>Add your review!</label>
                         <input type="text"
                                className="form-control"
                                id="review"
@@ -47,7 +46,7 @@ const CreateReview = (props) => {
                                onChange={handleChange}
                         />
                     </div>
-                    <button id="submit" type="submit" className="btn btn-primary">Submit</button>
+                    <button id="submit" type="submit" className="btn btn-primary my-3">Submit</button>
                 </form>
             </div>
         </div>

@@ -37,8 +37,8 @@ const ProductAdd = (props) => {
         <div className="row mt-5">
             <div className="col-md-5">
                 <form onSubmit={onFormSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="title">Movie Title</label>
+                    <div className="form-group my-3">
+                        <label htmlFor="title" className={"h5"}>Movie Title</label>
                         <input type="text"
                                className="form-control"
                                id="title"
@@ -48,8 +48,8 @@ const ProductAdd = (props) => {
                                onChange={handleChange}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="description">Movie Description</label>
+                    <div className="form-group my-3">
+                        <label htmlFor="description" className={"h5"}>Movie Description</label>
                         <input type="text"
                                className="form-control"
                                id="description"
@@ -59,8 +59,8 @@ const ProductAdd = (props) => {
                                onChange={handleChange}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="genre">Movie Genre</label>
+                    <div className="form-group my-3">
+                        <label htmlFor="genre" className={"h5"}>Movie Genre</label>
                         <input type="text"
                                className="form-control"
                                id="genre"
@@ -70,8 +70,8 @@ const ProductAdd = (props) => {
                                onChange={handleChange}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="year">Movie Year</label>
+                    <div className="form-group my-3">
+                        <label htmlFor="year" className={"h5"}>Movie Year</label>
                         <input type="number"
                                className="form-control"
                                id="year"
@@ -81,7 +81,7 @@ const ProductAdd = (props) => {
                                onChange={handleChange}
                         />
                     </div>
-                    <button id="submit" type="submit" className="btn btn-primary">Submit</button>
+                    <button id="submit" type="submit" className="btn btn-success">Submit</button>
                 </form>
             </div>
         </div>

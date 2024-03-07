@@ -31,12 +31,11 @@ const MovieRate = (props) => {
             <div className="col-md-5">
                 <form onSubmit={onFormSubmit}>
                     <div className="form-group">
-                        <div className="container">
-                            <div>
+                            <div className={"display-5 fw-bold"}>
                                 {props.movie.title}
                             </div>
-                        </div>
-                        <label htmlFor="rating">Add your rating!</label>
+                        <hr></hr>
+                        <label htmlFor="rating" className={"h4"}>Add your rating!</label>
                         <input type="number"
                                className="form-control"
                                id="rating"
@@ -49,7 +48,7 @@ const MovieRate = (props) => {
                                onChange={handleChange}
                         />
                     </div>
-                    <button id="submit" type="submit" className="btn btn-primary">Submit</button>
+                    <button id="submit" type="submit" className="btn btn-primary my-3">Submit</button>
                 </form>
             </div>
         </div>
