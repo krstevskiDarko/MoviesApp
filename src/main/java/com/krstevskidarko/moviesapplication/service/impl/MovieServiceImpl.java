@@ -8,8 +8,9 @@ import com.krstevskidarko.moviesapplication.model.dto.MovieDto;
 import com.krstevskidarko.moviesapplication.model.exceptions.InvalidMovieIdException;
 import com.krstevskidarko.moviesapplication.repository.MovieRepository;
 import com.krstevskidarko.moviesapplication.service.MovieService;
-import com.krstevskidarko.moviesapplication.service.RatingService;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,11 +21,9 @@ import java.util.stream.Collectors;
 public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepository;
-    private final RatingService ratingService;
 
-    public MovieServiceImpl(MovieRepository movieRepository, RatingService ratingService) {
+    public MovieServiceImpl(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
-        this.ratingService = ratingService;
     }
 
     @Override
@@ -189,6 +188,15 @@ public class MovieServiceImpl implements MovieService {
         return movies.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+
+    }
+
+    @Override
+    public Page<MovieDto> listMoviesWithPagination(Pageable pageable) {
+
+        Page<Movie> movies = this.movieRepository.findAll(pageable);
+
+        return  movies.map(this::convertToDto);
 
     }
 

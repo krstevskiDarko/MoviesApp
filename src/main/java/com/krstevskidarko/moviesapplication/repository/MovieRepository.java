@@ -1,6 +1,8 @@
 package com.krstevskidarko.moviesapplication.repository;
 
 import com.krstevskidarko.moviesapplication.model.Movie;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +23,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findAllByTitleLike(String title);
 
     void deleteByTitle(String title);
+    Page<Movie> findAll(Pageable pageable);
 
 }

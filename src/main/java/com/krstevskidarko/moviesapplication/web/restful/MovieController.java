@@ -6,10 +6,13 @@ import com.krstevskidarko.moviesapplication.model.dto.MovieDto;
 import com.krstevskidarko.moviesapplication.service.MovieService;
 import com.krstevskidarko.moviesapplication.service.RatingService;
 import com.krstevskidarko.moviesapplication.service.ReviewService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -39,6 +42,43 @@ public class MovieController {
     {
         if (title == null && genre == null && (genres == null || genres.isEmpty()) && year == null && yearFrom == null && yearTo == null) {
             return this.movieService.listAllMovies();
+        }
+        Set<MovieDto> movies = new HashSet<>();
+
+        if(title != null){
+            movies.addAll(this.movieService.listMoviesWithTitle(title));
+        }
+        if(genre != null){
+            movies.addAll(this.movieService.listMoviesWithGenre(genre));
+        }
+        if(genres != null){
+            movies.addAll(this.movieService.listMoviesWithGenres(genres));
+        }
+        if(year != null){
+            movies.addAll(this.movieService.listMovieInYear(year));
+        }
+        if(yearFrom != null){
+            movies.addAll(this.movieService.listMoviesFromYear(yearFrom));
+        }
+        if(yearTo != null){
+            movies.addAll(this.movieService.listMoviesToYear(yearTo));
+        }
+
+
+        return new ArrayList<>(movies);
+    }
+
+    @GetMapping("/pagination")
+    public List<MovieDto> findAllWithPagination(@RequestParam(required = false) String title,
+                                                @RequestParam(required = false) String genre,
+                                                @RequestParam(required = false) List<String> genres,
+                                                @RequestParam(required = false) Integer year,
+                                                @RequestParam(required = false) Integer yearFrom,
+                                                @RequestParam(required = false) Integer yearTo,
+                                                Pageable pagination)
+    {
+        if (title == null && genre == null && (genres == null || genres.isEmpty()) && year == null && yearFrom == null && yearTo == null) {
+            return this.movieService.listMoviesWithPagination(pagination).getContent();
         }
         Set<MovieDto> movies = new HashSet<>();
 

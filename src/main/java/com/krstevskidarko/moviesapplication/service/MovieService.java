@@ -2,6 +2,8 @@ package com.krstevskidarko.moviesapplication.service;
 
 import com.krstevskidarko.moviesapplication.model.Movie;
 import com.krstevskidarko.moviesapplication.model.dto.MovieDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,4 +35,6 @@ public interface MovieService {
     List<MovieDto> listMoviesToYear(Integer year);
 
     List<MovieDto> listMoviesWithTitle(String title);
+
+    Page<MovieDto> listMoviesWithPagination(Pageable pageable);
 }
