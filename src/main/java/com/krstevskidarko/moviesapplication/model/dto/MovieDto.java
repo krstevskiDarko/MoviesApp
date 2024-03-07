@@ -19,9 +19,9 @@ public class MovieDto {
 
     private Double averageRating;
 
-    private List<Long> ratingIds;
+    private List<Double> ratings;
 
-    private List<Long> reviewIds;
+    private List<String> reviews;
 
     public MovieDto() {
     }

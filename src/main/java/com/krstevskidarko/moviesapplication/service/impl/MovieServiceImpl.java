@@ -201,15 +201,15 @@ public class MovieServiceImpl implements MovieService {
         movieDto.setGenre(movie.getGenre());
         movieDto.setYear(movie.getYear());
         movieDto.setAverageRating(movie.getAverageRating());
-        List<Long> ratingIds = movie.getRatings().stream()
-                .map(Rating::getId)
-                .collect(Collectors.toList());
-        movieDto.setRatingIds(ratingIds);
 
-        List<Long> reviewIds = movie.getReviews().stream()
-                .map(Review::getId)
-                .collect(Collectors.toList());
-        movieDto.setReviewIds(reviewIds);
+        movieDto.setRatings(movie.getRatings().stream()
+                .map(Rating::getValue)
+                .collect(Collectors.toList()));
+
+        movieDto.setReviews(movie.getReviews().stream()
+                .map(Review::getReview)
+                .collect(Collectors.toList()));
+
         return movieDto;
     }
 }

@@ -41,6 +41,9 @@ const MovieRate = (props) => {
                                className="form-control"
                                id="rating"
                                name="rating"
+                               min={"1"}
+                               max={"10"}
+                               step={"0.1"}
                                required
                                placeholder="Rating"
                                onChange={handleChange}

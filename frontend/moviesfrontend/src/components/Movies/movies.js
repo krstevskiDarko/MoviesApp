@@ -37,46 +37,46 @@ const Movies = (props) => {
     }
 
     return (
-        <div>
+        <div className={"container"}>
             <form onSubmit={onFormSubmit}>
-                <div className="form-group">
+                <div className="form-group m-1">
                     <input type="text"
-                           className="form-control"
+                           className="form-control m-1"
                            id="title"
                            name="title"
                            placeholder="Search by Title"
                            onChange={handleChange}
                     />
                     <input type="text"
-                           className="form-control"
+                           className="form-control m-1"
                            id="genre"
                            name="genre"
                            placeholder="Search by Genre"
                            onChange={handleChange}
                     />
                     <input type="text"
-                           className="form-control"
+                           className="form-control m-1"
                            id="genres"
                            name="genres"
                            placeholder="Search by Genres"
                            onChange={handleChange}
                     />
                     <input type="number"
-                           className="form-control"
+                           className="form-control m-1"
                            id="year"
                            name="year"
                            placeholder="Search by Year"
                            onChange={handleChange}
                     />
                     <input type="number"
-                           className="form-control"
+                           className="form-control m-1"
                            id="yearFrom"
                            name="yearFrom"
                            placeholder="Search by YearFrom"
                            onChange={handleChange}
                     />
                     <input type="number"
-                           className="form-control"
+                           className="form-control m-1"
                            id="yearTo"
                            name="yearTo"
                            placeholder="Seach by YearTo"
@@ -85,27 +85,27 @@ const Movies = (props) => {
                     <button id="submit" type="submit" className="btn btn-primary">Search</button>
                 </div>
             </form>
-            <div>
-              <table>
+            <div className={"container mt-5"}>
+              <table className={"table"}>
                   <thead>
                     <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Genre</th>
-                        <th>Rating</th>
-                        <th>Year</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Year</th>
                     </tr>
                   </thead>
                   <tbody>
                       {props.movies.map((term)=>{
                           return(
                             <tr>
-                                <td >{term.title}</td>
-                                <td>{term.description}</td>
-                                <td>{term.genre}</td>
-                                <td>{term.averageRating}</td>
-                                <td>{term.year}</td>
-                                <td>
+                                <td scope="col">{term.title}</td>
+                                <td scope="col">{term.description}</td>
+                                <td scope="col">{term.genre}</td>
+                                <td scope="col">{term.averageRating}</td>
+                                <td scope="col">{term.year}</td>
+                                <td scope="col">
                                     <Link
                                         to={`/movies/${term.id}`}
                                         onClick={() =>
@@ -127,10 +127,15 @@ const Movies = (props) => {
                   </tbody>
               </table>
           </div>
-          <div>
-              <Link to={"/movies/add"}>Add Movie</Link>
-          </div>
-      </div>
+            <div className="col mb-3">
+                <div className="row">
+                    <div className="col-sm-12 col-md-12">
+                        <Link className={"btn btn-block btn-success"} to={"/products/add"}>Add new movie!</Link>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     );
 }
 
