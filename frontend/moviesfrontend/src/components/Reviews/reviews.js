@@ -18,11 +18,11 @@ const Reviews = (props) => {
                     {props.reviews.map((term)=>{
                         return(
                             <tr>
-                                <td scope={"col"}>{term.movieId}</td>
-                                <td scope={"col"}>{term.movieTitle}</td>
-                                <td scope={"col"}>{term.movieDescription}</td>
-                                <td scope={"col"}>{term.movieRating}</td>
-                                <td scope={"col"}>{term.review}</td>
+                                <td>{term.movieId}</td>
+                                <td>{term.movieTitle}</td>
+                                <td>{term.movieDescription}</td>
+                                <td>{term.movieRating}</td>
+                                <td>{term.review}</td>
                             </tr>
                         );
                     })}

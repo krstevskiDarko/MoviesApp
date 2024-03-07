@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from "react-router-dom";
 
 const Movies = (props) => {
@@ -58,7 +58,7 @@ const Movies = (props) => {
                            className="form-control m-1"
                            id="genres"
                            name="genres"
-                           placeholder="Search by Genres"
+                           placeholder="Search by Genres (separate them with ,)"
                            onChange={handleChange}
                     />
                     <input type="number"
@@ -79,7 +79,7 @@ const Movies = (props) => {
                            className="form-control m-1"
                            id="yearTo"
                            name="yearTo"
-                           placeholder="Seach by YearTo"
+                           placeholder="Search by YearTo"
                            onChange={handleChange}
                     />
                     <button id="submit" type="submit" className="btn btn-primary">Search</button>
@@ -100,12 +100,12 @@ const Movies = (props) => {
                       {props.movies.map((term)=>{
                           return(
                             <tr>
-                                <td scope="col">{term.title}</td>
-                                <td scope="col">{term.description}</td>
-                                <td scope="col">{term.genre}</td>
-                                <td scope="col">{term.averageRating}</td>
-                                <td scope="col">{term.year}</td>
-                                <td scope="col">
+                                <td>{term.title}</td>
+                                <td>{term.description}</td>
+                                <td>{term.genre}</td>
+                                <td>{term.averageRating}</td>
+                                <td>{term.year}</td>
+                                <td>
                                     <Link
                                         to={`/movies/${term.id}`}
                                         onClick={() =>
@@ -130,7 +130,7 @@ const Movies = (props) => {
             <div className="col mb-3">
                 <div className="row">
                     <div className="col-sm-12 col-md-12">
-                        <Link className={"btn btn-block btn-success"} to={"/products/add"}>Add new movie!</Link>
+                        <Link className={"btn btn-block btn-success"} to={"/movies/add"}>Add new movie!</Link>
                     </div>
                 </div>
             </div>

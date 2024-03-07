@@ -1,4 +1,3 @@
-// App.js
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Movies from '../Movies/movies';

@@ -20,13 +20,13 @@ const MovieDetails = (props) => {
                     </thead>
                     <tbody>
                             <tr>
-                                <td scope="col">{props.movie.title}</td>
-                                <td scope="col">{props.movie.description}</td>
-                                <td scope="col">{props.movie.genre}</td>
-                                <td scope="col">{props.movie.year}</td>
-                                <td scope="col">{props.movie.averageRating}</td>
-                                <td scope="col">{props.movie.ratings && props.movie.ratings.join('; ')}</td>
-                                <td scope="col">{props.movie.reviews && props.movie.reviews.join('; ')}</td>
+                                <td>{props.movie.title}</td>
+                                <td>{props.movie.description}</td>
+                                <td>{props.movie.genre}</td>
+                                <td>{props.movie.year}</td>
+                                <td>{props.movie.averageRating}</td>
+                                <td>{props.movie.ratings && props.movie.ratings.join(' ; ')}</td>
+                                <td>{props.movie.reviews && props.movie.reviews.join(' ; ')}</td>
                             </tr>
                     </tbody>
                 </table>
