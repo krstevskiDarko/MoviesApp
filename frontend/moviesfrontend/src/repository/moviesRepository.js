@@ -1,8 +1,15 @@
 import axios from '../custom-axios/axios';
 
 const MoviesService = {
-    fetchMovies: () => {
-        return axios.get(`/movies`)
+    fetchMovies: (title, genre, genres, year, yearFrom, yearTo) => {
+        return axios.get(`/movies`, { params: {
+            title: title,
+            genre: genre,
+            genres: genres,
+            year: year,
+            yearFrom: yearFrom,
+            yearTo: yearTo,
+        }})
     },
     fetchReviews: () => {
         return axios.get(`/reviews`)

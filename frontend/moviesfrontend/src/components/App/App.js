@@ -1,3 +1,4 @@
+// App.js
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Movies from '../Movies/movies';
@@ -17,7 +18,13 @@ class App extends Component {
             movies: [],
             reviews: [],
             selectedMovie: {},
-            selectedReviews: []
+            selectedReviews: [],
+            title: "",
+            genre: "",
+            genres: "",
+            year: "",
+            yearFrom: "",
+            yearTo: ""
         }
     }
 
@@ -43,6 +50,8 @@ class App extends Component {
                                 <Movies
                                     selectMovie={this.getMovie}
                                     selectMovieReviews={this.getReview}
+                                    onSearch={this.filterMovies}
+                                    loadAllMovies={this.loadMovies}
                                     movies={this.state.movies} />} />
                             <Route path="/movies/:id/review" element={
                                 <CreateReview
@@ -63,8 +72,8 @@ class App extends Component {
         this.loadReviews();
     }
 
-    loadMovies = () =>{
-        MoviesService.fetchMovies()
+    loadMovies = (title, genre, genres, year, yearFrom, yearTo) =>{
+        MoviesService.fetchMovies(title, genre, genres, year, yearFrom, yearTo)
             .then((data) => {
                 this.setState({
                     movies: data.data
@@ -72,6 +81,19 @@ class App extends Component {
             });
     }
 
+    filterMovies = (title, genre, genres, year, yearFrom, yearTo) => {
+        this.setState({
+            title: title,
+            genre: genre,
+            genres: genres,
+            year: year,
+            yearFrom: yearFrom,
+            yearTo: yearTo
+        }, () => {
+            this.loadMovies(title, genre, genres, year, yearFrom, yearTo);
+        });
+
+    }
     loadReviews = () => {
         MoviesService.fetchReviews()
             .then((data)=> {
