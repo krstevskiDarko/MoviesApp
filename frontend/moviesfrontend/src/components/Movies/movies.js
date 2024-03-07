@@ -1,7 +1,25 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import ReactPaginate from "react-paginate";
+
 
 const Movies = (props) => {
+
+    const [pagination, updatePagination] = React.useState({
+        page: 0,
+        size: 3
+    })
+
+    const pageCount = props.movies.length === 0 ? 1 : Math.ceil(props.movies.length / pagination.size);
+    const offset = pagination.size * pagination.page;
+    const nextPageOffset = offset + pagination.size;
+
+    const handlePageChange = ({selected}) => {
+        updatePagination({
+            ...pagination,
+            page: selected
+        })
+    }
 
     const [formData, updateFormData] = React.useState({
         title: "",
@@ -82,12 +100,14 @@ const Movies = (props) => {
                            placeholder="Search by YearTo"
                            onChange={handleChange}
                     />
-                    <button id="submit" type="submit" className="btn btn-primary">Search</button>
+                    <div className={"col-auto"}>
+                        <button id="submit" type="submit" className="btn btn-primary">Search</button>
+                    </div>
                 </div>
             </form>
             <div className={"container mt-5"}>
-              <table className={"table"}>
-                  <thead>
+                <table className={"table table-striped"}>
+                    <thead>
                     <tr>
                         <th scope="col">Title</th>
                         <th scope="col">Description</th>
@@ -95,11 +115,11 @@ const Movies = (props) => {
                         <th scope="col">Rating</th>
                         <th scope="col">Year</th>
                     </tr>
-                  </thead>
-                  <tbody>
-                      {props.movies.map((term)=>{
-                          return(
-                            <tr>
+                    </thead>
+                    <tbody>
+                    {props.movies.slice(offset, nextPageOffset).map((term)=>{
+                        return(
+                            <tr key={term.id}>
                                 <td>{term.title}</td>
                                 <td>{term.description}</td>
                                 <td>{term.genre}</td>
@@ -109,9 +129,7 @@ const Movies = (props) => {
                                     <Link
                                         to={`/movies/${term.id}`}
                                         onClick={() =>
-                                            props.selectMovie(term.id)
-                                    }
-                                    >
+                                            props.selectMovie(term.id)}>
                                         Get more details!
                                     </Link>
                                 </td>
@@ -122,11 +140,23 @@ const Movies = (props) => {
                                     <Link to={`/movies/${term.id}/rate`} onClick={() => props.selectMovie(term.id)}> Add your rating! </Link>
                                 </td>
                             </tr>
-                          );
-                      })}
-                  </tbody>
-              </table>
-          </div>
+                        );
+                    })}
+                    </tbody>
+                </table>
+            </div>
+            <ReactPaginate previousLabel={"Back"}
+                           nextLabel={"Next"}
+                           breakLabel={<a href={"/#"}>...</a>}
+                           breakClassName={"break-me"}
+                           pageClassName={"ml-1"}
+                           pageCount={pageCount}
+                           marginPagesDisplayed={2}
+                           pageRangeDisplayed={6}
+                           onPageChange={handlePageChange}
+                           containerClassName={"pagination m-4 justify-content-center"}
+                           activeClassName={"active"}
+            />
             <div className="col mb-3">
                 <div className="row">
                     <div className="col-sm-12 col-md-12">
@@ -137,6 +167,7 @@ const Movies = (props) => {
 
         </div>
     );
+
 }
 
 export default Movies;

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {BrowserRouter as Router, Navigate, Route, Routes} from "react-router-dom";
 import Movies from '../Movies/movies';
 import MoviesService from "../../repository/moviesRepository";
 import Reviews from "../Reviews/reviews";
@@ -59,6 +59,10 @@ class App extends Component {
                             <Route path="/reviews" element={
                                 <Reviews
                                     reviews={this.state.reviews} />} />
+                            <Route
+                                path="/"
+                                element={ <Navigate to="/movies" /> }
+                            />
                         </Routes>
                     </div>
                 </main>
