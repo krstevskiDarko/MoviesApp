@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
 
-const ProductAdd = (props) => {
+const MoviesAdd = (props) => {
 
     const navigate = useNavigate()
 
@@ -27,7 +27,7 @@ const ProductAdd = (props) => {
         const genre = formData.genre;
         const year = formData.year;
 
-        props.onAddProduct(title,description,genre,year)
+        props.onAddMovie(title,description,genre,year)
 
         navigate('/movies')
     }
@@ -89,4 +89,4 @@ const ProductAdd = (props) => {
     )
 }
 
-export default ProductAdd;
+export default MoviesAdd;

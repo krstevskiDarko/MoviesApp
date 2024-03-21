@@ -1,60 +1,57 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from "react-router-dom";
-import ReactPaginate from "react-paginate";
+import MoviesService from "../../repository/moviesRepository";
 
 
 const Movies = (props) => {
+    console.log("Movies props:", props.movies);
 
-    const [pagination, updatePagination] = React.useState({
-        page: 0,
-        size: 6
-    })
-
-    const pageCount = props.movies.length === 0 ? 1 : Math.ceil(props.movies.length / pagination.size);
-    const offset = pagination.size * pagination.page;
-    const nextPageOffset = offset + pagination.size;
-
-    const handlePageChange = ({selected}) => {
-        updatePagination({
-            ...pagination,
-            page: selected
-        })
-    }
-
-    const [formData, updateFormData] = React.useState({
+    const [formData, updateFormData] = useState({
         title: "",
         genre: "",
         genres: "",
         year: "",
         yearFrom: "",
         yearTo: ""
-    })
+    });
+
+    const [currentPage, setCurrentPage] = useState(0);
 
     const handleChange = (e) => {
         updateFormData({
             ...formData,
             [e.target.name]: e.target.value.trim()
-        })
-    }
+        });
+    };
 
-    const onFormSubmit = (e) =>{
+    const onFormSubmit = async (e) => {
         e.preventDefault();
 
-        const title = formData.title;
-        const genre = formData.genre;
-        const genres = formData.genres;
-        const year = formData.year;
-        const yearFrom = formData.yearFrom;
-        const yearTo = formData.yearTo;
+        const { title, genre, genres, year, yearFrom, yearTo } = formData;
 
-        if (!title && !genre && !genres && !year && !yearFrom && !yearTo) {
-            props.loadAllMovies();
-        } else {
-            props.onSearch(title, genre, genres, year, yearFrom, yearTo);
+        try {
+            const response = await MoviesService.fetchMovies(title, genre, genres, year, yearFrom, yearTo, 0);
+                props.setMovies(response.data.content);
+
+        } catch (error) {
+            console.error(error);
         }
-    }
+    };
 
-    return (
+    const paginate = async (pageNumber) => {
+        setCurrentPage(pageNumber);
+
+        const { title, genre, genres, year, yearFrom, yearTo } = formData;
+
+        try {
+            const response = await MoviesService.fetchMovies(title, genre, genres, year, yearFrom, yearTo, pageNumber - 1);
+            props.setMovies(response.data.content);
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+        return (
         <div className={"container"}>
             <form onSubmit={onFormSubmit}>
                 <div className="form-group m-1">
@@ -107,7 +104,7 @@ const Movies = (props) => {
             </form>
             <div className="container pt-3">
                 <div className="row">
-                    {props.movies.slice(offset, nextPageOffset).map((term)=>{
+                    {props.movies.map((term)=>{
                         return(
                             <div className="col-lg-4 my-2">
                                 <div className="card border border-secondary shadow">
@@ -142,23 +139,19 @@ const Movies = (props) => {
                                     </div>
                                 </div>
                             </div>
-
                         );
                     })}
                 </div>
+                <ul className="pagination justify-content-center">
+                    {Array.from({ length: Math.ceil(props.movies.length / 10) }).map((_, index) => (
+                        <li className={`page-item ${index + 1 === currentPage && 'active'}`} key={index}>
+                            <button className="page-link" onClick={() => paginate(index + 1)}>
+                                {index + 1}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
             </div>
-            <ReactPaginate previousLabel={"Back"}
-                           nextLabel={"Next"}
-                           breakLabel={<a href={"/#"}>...</a>}
-                           breakClassName={"break-me"}
-                           pageClassName={"ml-1"}
-                           pageCount={pageCount}
-                           marginPagesDisplayed={2}
-                           pageRangeDisplayed={6}
-                           onPageChange={handlePageChange}
-                           containerClassName={"pagination m-4 justify-content-center"}
-                           activeClassName={"active"}
-            />
             <div className="col mb-3">
                 <div className="row">
                     <div className="col-sm-12 col-md-12">
@@ -169,7 +162,6 @@ const Movies = (props) => {
 
         </div>
     );
-
 }
 
 export default Movies;

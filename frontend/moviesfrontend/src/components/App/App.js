@@ -4,10 +4,10 @@ import Movies from '../Movies/movies';
 import MoviesService from "../../repository/moviesRepository";
 import Reviews from "../Reviews/reviews";
 import Header from "../Header/header";
-import ProductAdd from "../Movies/MoviesAdd/moviesAdd";
 import MovieDetails from "../Movies/MovieDetails/movieDetails";
 import CreateReview from "../Reviews/createReview/createReview";
 import MovieRate from "../Movies/MovieRate/movieRate";
+import MoviesAdd from "../Movies/MoviesAdd/moviesAdd";
 
 class App extends Component {
 
@@ -23,7 +23,9 @@ class App extends Component {
             genres: "",
             year: "",
             yearFrom: "",
-            yearTo: ""
+            yearTo: "",
+            currentPage: 0,
+            moviesPerPage: 4
         }
     }
 
@@ -35,8 +37,8 @@ class App extends Component {
                     <div className="container m-4">
                         <Routes>
                             <Route path={"/movies/add"} element={
-                                <ProductAdd
-                                    onAddProduct={this.addProduct}/>}/>
+                                <MoviesAdd
+                                    onAddMovie={this.addMovie}/>}/>
                             <Route path={"/movies/:id"} element={
                                 <MovieDetails
                                     onMovieDetails={this.movieDetail}
@@ -50,7 +52,8 @@ class App extends Component {
                                     selectMovie={this.getMovie}
                                     selectMovieReviews={this.getReview}
                                     onSearch={this.filterMovies}
-                                    loadAllMovies={this.loadMovies}
+                                    loadAllMovies={this.filterMovies}
+                                    setMovies={(movies, page) => {this.setState({movies: movies, page:page})}}
                                     movies={this.state.movies} />} />
                             <Route path="/movies/:id/review" element={
                                 <CreateReview
@@ -75,25 +78,26 @@ class App extends Component {
         this.loadReviews();
     }
 
-    loadMovies = (title, genre, genres, year, yearFrom, yearTo) =>{
-        MoviesService.fetchMovies(title, genre, genres, year, yearFrom, yearTo)
+    loadMovies = (title, genre, genres, year, yearFrom, yearTo, page) => {
+        MoviesService.fetchMovies(title, genre, genres, year, yearFrom, yearTo, page)
             .then((data) => {
                 this.setState({
-                    movies: data.data
+                    movies: data.data.content
                 })
             });
     }
 
-    filterMovies = (title, genre, genres, year, yearFrom, yearTo) => {
+    filterMovies = (title, genre, genres, year, yearFrom, yearTo, page) => {
         this.setState({
             title: title,
             genre: genre,
             genres: genres,
             year: year,
             yearFrom: yearFrom,
-            yearTo: yearTo
+            yearTo: yearTo,
+            page: page,
         }, () => {
-            this.loadMovies(title, genre, genres, year, yearFrom, yearTo);
+            this.loadMovies(title, genre, genres, year, yearFrom, yearTo, page);
         });
 
     }
@@ -115,15 +119,6 @@ class App extends Component {
             })
     }
 
-    // getReview = (id) => {
-    //     MoviesService.getReview(id)
-    //         .then((data) => {
-    //             this.setState({
-    //                 selectedReviews: data.data
-    //             })
-    //         })
-    // }
-
     movieDetail = (id) => {
         MoviesService.movieDetails(id)
             .then(() => {
@@ -131,7 +126,7 @@ class App extends Component {
             })
     }
 
-    addProduct = (title, description, genre, year) => {
+    addMovie = (title, description, genre, year) => {
         MoviesService.addMovie(title, description, genre, year)
             .then(() => {
                 this.loadMovies()

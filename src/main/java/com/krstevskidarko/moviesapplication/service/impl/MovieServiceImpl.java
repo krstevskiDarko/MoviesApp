@@ -59,16 +59,6 @@ public class MovieServiceImpl implements MovieService {
     }
 
 
-
-//    @Override
-//    public Movie review(Long id, String review){
-//        Movie movie = this.movieRepository.findById(id).orElseThrow(InvalidMovieIdException::new);
-//
-//        movie.getReviews().add(new Review(review,movie));
-//
-//        return this.movieRepository.save(movie);
-//    }
-
     @Transactional
     @Override
     public Movie rate(Long id, Double rating) {
@@ -83,24 +73,15 @@ public class MovieServiceImpl implements MovieService {
 
     private Double calculateAverageRating(Movie movie){
         List<Rating> ratings = movie.getRatings();
-        if (ratings.isEmpty()) {
+
+        if(ratings.isEmpty()){
             return 0.0;
         }
 
-        Double sum = 0.0;
-        int count = 0;
-        for (Rating rating : ratings) {
-            if (rating.getValue() != null) {
-                sum += rating.getValue();
-                count++;
-            }
-        }
-        if (count == 0) {
-            return 0.0;
-        }
-        System.out.println(sum);
-        System.out.println(count);
-        return sum / count;
+        return ratings.stream()
+                .mapToDouble(Rating::getValue)
+                .average()
+                .orElse(0.0);
     }
 
 
@@ -198,6 +179,13 @@ public class MovieServiceImpl implements MovieService {
 
         return  movies.map(this::convertToDto);
 
+    }
+
+    @Override
+    public Page<MovieDto> listMoviesWithFilters(String title, String genre, List<String> genres, Integer year, Integer yearFrom, Integer yearTo,Pageable pageable) {
+
+        return this.movieRepository.findAllWithFilters(title, genre, genres, year, yearFrom, yearTo, pageable)
+                .map(this::convertToDto);
     }
 
     private MovieDto convertToDto(Movie movie) {

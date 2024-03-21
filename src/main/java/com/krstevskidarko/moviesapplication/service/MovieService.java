@@ -37,4 +37,6 @@ public interface MovieService {
     List<MovieDto> listMoviesWithTitle(String title);
 
     Page<MovieDto> listMoviesWithPagination(Pageable pageable);
+
+    Page<MovieDto> listMoviesWithFilters(String title, String genre, List<String> genres, Integer year, Integer yearFrom, Integer yearTo,Pageable pageable);
 }
